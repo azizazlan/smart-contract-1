@@ -11,4 +11,8 @@ contract SalamMelaka {
     function salam() public view returns (string memory) {
         return string(abi.encodePacked("Assalamualaikum, ", name, "!"));
     }
+
+    // function changeName(string memory _name) public {
+    //     name = _name;
+    // }
 }

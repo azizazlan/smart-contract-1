@@ -27,5 +27,17 @@ describe("SalamMelaka", function () {
         "Assalamualaikum, Rauf Yusoh!"
       );
     });
+
+    // it("Should return the new name", async function () {
+    //   const { salamMelaka, owner, otherAccount } = await loadFixture(
+    //     deploySalamMelaka
+    //   );
+
+    //   await salamMelaka.changeName("Idris Jusoh");
+
+    //   expect(await salamMelaka.salam()).to.equal(
+    //     "Assalamualaikum, Idris Jusoh!"
+    //   );
+    // });
   });
 });
