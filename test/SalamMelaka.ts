@@ -4,13 +4,9 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 
 describe("SalamMelaka", function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
   async function deploySalamMelaka() {
     // Contracts are deployed using the first signer/account by default
     const [owner, otherAccount] = await ethers.getSigners();
-
     const SalamMelaka = await ethers.getContractFactory("SalamMelaka");
     const salamMelaka = await SalamMelaka.deploy("Rauf Yusoh");
 
@@ -28,16 +24,29 @@ describe("SalamMelaka", function () {
       );
     });
 
-    // it("Should return the new name", async function () {
-    //   const { salamMelaka, owner, otherAccount } = await loadFixture(
-    //     deploySalamMelaka
-    //   );
+    describe("Change state name", function () {
+      it("Should change to new name", async function () {
+        const { salamMelaka, owner, otherAccount } = await loadFixture(
+          deploySalamMelaka
+        );
+        const newName = "Azlan";
+        await salamMelaka.changeName(newName);
+        expect(await salamMelaka.name()).equals("Azlan");
+        expect(await salamMelaka.salam()).equals("Assalamualaikum, Azlan!");
+      });
+    });
 
-    //   await salamMelaka.changeName("Idris Jusoh");
-
-    //   expect(await salamMelaka.salam()).to.equal(
-    //     "Assalamualaikum, Idris Jusoh!"
-    //   );
-    // });
+    describe("Event emission", function () {
+      it("should emit AgeChanged event", async function () {
+        const { salamMelaka, owner, otherAccount } = await loadFixture(
+          deploySalamMelaka
+        );
+        await salamMelaka.changeAge(40);
+        const event = await salamMelaka.filters.AgeChanged(null);
+        const eAgeChanged = await salamMelaka.queryFilter(event);
+        // console.log(eAlhamdulillahEvent);
+        expect(eAgeChanged[0].args.newAge).equals(40);
+      });
+    });
   });
 });
